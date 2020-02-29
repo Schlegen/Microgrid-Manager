@@ -1,0 +1,174 @@
+      html {
+          height: 100%;
+      }
+
+      html, body, div, span, h1, h2, h3, h4, h5, h6, p {
+          margin: 0;
+          padding: 0;
+          border: 0;
+          outline: 0;
+          font-size: 100%;
+          font: inherit;
+          vertical-align: baseline;
+          background: transparent;
+      }
+
+      body {
+          position: relative;
+          font-family: "proxima nova", Arial, Helvetica, sans-serif;
+          font-size: 14px;
+          font-weight: normal;
+          line-height: 1.4;
+          background-color: #2a2a2b;
+          min-width: 300px;
+          min-height: 100%;
+          color: #999;
+          overflow: auto;
+          display: inline-block;
+          width: 100%;
+      }
+
+      a:hover {
+        font-weight: bold;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: None;
+      }
+
+      .content {
+          min-height: 100%;
+          min-width: 300px;
+          display: inline-block;
+          width: 100%;
+      }
+
+      header {
+          position: relative;
+          margin-bottom: 10px;
+          min-width: 300px;
+      }
+
+      .header-background {
+          background-color: #3e3e40;
+          opacity: 0.9;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          box-shadow: 0 0 2px 1px rgba(175, 175, 175, 0.3);
+      }
+
+      .title {
+          position: relative;
+          width: 400px;
+          min-width: 300px;
+          margin: 0 auto;
+          padding: 15px 0;
+          box-sizing: border-box;
+          text-align: center;
+      }
+
+      h1 {
+          font-size: 24px;
+          font-weight: lighter;
+          line-height: 26px;
+      }
+
+      .chart {
+        position : absolute;
+        margin: 5px auto 0 auto;
+        padding : 5px;
+        border : 1px #CCC solid;
+        background-color: #3e3e40;
+        display: block-inline;
+        vertical-align: top;
+      }
+
+      .function_plot {
+        height : 312px;
+        width : 730px;
+     }
+
+     .price_plot {
+       height : 210px;
+       width : 364px;
+    }
+
+     .svg_plot {
+       height : 850px;
+       width : 1100px;
+     }
+
+     .left {
+       left : 5px;
+     }
+
+
+     .right {
+       right : 5px;
+     }
+
+     .left_right {
+       left : 370px;
+     }
+
+     .second {
+       top : 385px;
+     }
+
+     .third {
+       top : 705px;
+     }
+
+      .chartContainer{
+        margin: 0 auto;
+      }
+
+      @media (min-width: 600px) {
+        .chartContainer{
+          width:570px;
+        }
+      }
+
+      @media (min-width: 1200px) {
+        .chartContainer{
+          width:1140px;
+        }
+      }
+
+      @media (min-width: 1800px) {
+        .chartContainer{
+          width:1710px;
+        }
+      }
+
+      .chartTitle {
+        margin: 2px auto;
+        text-align: center;
+        width: 100%;
+        display: inline-block;
+        color:#333;
+        font-size:18px;
+      }
+
+      .domain {
+        fill : None;
+        stroke : grey;
+        shape-rendering: crispEdges;
+      }
+
+
+/* Function for the svg document */
+
+    .triangle {
+        transform-origin: center center;
+        transform-box: fill-box;
+        text-decoration: blink;
+    }
+
+    .house{
+      transform: rotate(0.5turn);
+    }
