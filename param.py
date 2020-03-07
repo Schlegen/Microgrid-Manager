@@ -16,8 +16,8 @@ data_train = lt_1213.customers[0].net_load[0:14*48]
 # parameters
 RHO_C = 0.95
 RHO_D = 0.95
-U_LOW = -1
-U_UP = 1
+U_LOW = -2.5
+U_UP = 2.5
 X_LOW = 0
 X_UP = 5
 

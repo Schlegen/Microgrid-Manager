@@ -14,7 +14,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-
     <script src="/static/theme.js"></script>
     <script src="/static/mydashboard.js"></script>
 
@@ -23,6 +22,14 @@
 
   </head>
 
+  <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+    <linearGradient id="block-gradient" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a2a2b" />
+      <stop offset="100%" stop-color="#3e3e40" />
+    </linearGradient>
+  </svg>
+
+
   <body>
     <div class="content">
 
@@ -30,7 +37,7 @@
         <div class="header-background"></div>
         <div class="title">
           <h1>
-            Microgrid Visualiser
+            MICROGRID MANAGER
           </h1>
         </div>
       </header>
@@ -38,11 +45,19 @@
       <main>
         <div class="chartContainer">
 
-          <div id="Battery" class="chart function_plot left">
-            <div id="container1" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+          <div id="Battery" style="max-width: 39.85%; height: 30.66%" class="chart first function_plot left">
+            <div id="container1" style="min-width: 100% ; height: 100%; margin: 0 auto"></div>
           </div>
 
-          <div id="container" class="chart svg_plot right">
+          <div id="Net_demand" style="max-width: 39.85%; height: 30.66%" class="chart function_plot left second">
+            <div id="container2" style="min-width: 100%; height: 100%; margin: 0 auto"></div>
+          </div>
+
+          <div id="cost" style="max-width: 39.85%; height: 30.66%" class="chart function_plot left third">
+            <div id="container3" style="min-width: 100%; height: 100%; margin: 0 auto"></div>
+          </div>
+
+          <div id="Container" style="max-width: 59.8%; height: 93%" class="chart first svg_plot right">
             <?xml version="1.0" encoding="UTF-8" standalone="no"?>
             <svg
                xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -52,13 +67,14 @@
                xmlns="http://www.w3.org/2000/svg"
                xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-               height="830px"
-               width="1070px"
+               height="100%"
+               width="100%"
                version="1.1"
                viewBox="0 0 55.458 44.199"
                id="svg4317"
                sodipodi:docname="shema_simplified.svg"
-               inkscape:version="0.92.4 (f8dce91, 2019-08-02)">
+               inkscape:version="0.92.4 (f8dce91, 2019-08-02)"
+               class="block-background" >
               <defs
                  id="defs4321" />
               <sodipodi:namedview
@@ -80,7 +96,8 @@
                  inkscape:window-x="67"
                  inkscape:window-y="27"
                  inkscape:window-maximized="1"
-                 inkscape:current-layer="g4315" />
+                 inkscape:current-layer="g4315"
+                 />
               <metadata
                  id="metadata4037">
                 <rdf:RDF>
@@ -93,6 +110,26 @@
                   </cc:Work>
                 </rdf:RDF>
               </metadata>
+
+              <rect
+                 x="-1"
+                 y="-1"
+                 width="57.458"
+                 height="46.199"
+                 id="rect40399"
+                 class="block-background"
+                 />
+              <text
+                  xml:space="preserve"
+                  style="font-style:normal;font-weight:normal;font-size:0.93007236px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#E0E0E3;fill-opacity:1;stroke:none;stroke-width:0.05325181"
+                  x="4.728462"
+                  y="1.39064"
+                  id="atext332-0-5-9"><tspan
+                    sodipodi:role="line"
+                    id="atspan330-3-8-9"
+                    x="4.728462"
+                    y="1.39064"
+                    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Rajdhani';fill:#E0E0E3;stroke-width:0.05325181;font-size:1.13007236px">FLUX SUR LA MICROGRID</tspan></text>
               <g
                  transform="translate(-41.57 -105.84)"
                  id="g4315">
@@ -732,17 +769,6 @@
                         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Tlwg Mono';-inkscape-font-specification:'Tlwg Mono';fill:#00ff00;stroke-width:0.05325181;font-size:1.94808755px">2.54 kWh</tspan></text>
                    <text
                       xml:space="preserve"
-                      style="font-style:normal;font-weight:normal;font-size:2.13007236px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.05325181"
-                      x="77.467224"
-                      y="137.47057"
-                      id="text372"><tspan
-                        sodipodi:role="line"
-                        id="tspan370"
-                        x="77.467224"
-                        y="139.35518"
-                        style="stroke-width:0.05325181" /></text>
-                   <text
-                      xml:space="preserve"
                       style="font-style:normal;font-weight:normal;font-size:2.13007236px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:0.05325181"
                       x="73.728462"
                       y="139.59064"
@@ -752,32 +778,10 @@
                         x="73.728462"
                         y="139.59064"
                         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Tlwg Mono';-inkscape-font-specification:'Tlwg Mono';fill:#00ff00;stroke-width:0.05325181;font-size:1.94808751px">2.52 kWh</tspan></text>
-                   <text
-                      xml:space="preserve"
-                      style="font-style:normal;font-weight:normal;font-size:2.13007236px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.05325181"
-                      x="57.46246"
-                      y="128.25371"
-                      id="text352"><tspan
-                        sodipodi:role="line"
-                        id="tspan350"
-                        x="57.46246"
-                        y="130.13832"
-                        style="stroke-width:0.05325181"></tspan></text>
             </svg>
 
           </div>
 
-          <div id="Net_demand" class="chart function_plot left second">
-            <div id="container2" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
-          </div>
-
-          <div id="what_I_paid" class="chart price_plot left third">
-            <div id="container2" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
-          </div>
-
-          <div id="what_Ill_pay" class="chart price_plot left_right third">
-            <div id="container2"></div>
-          </div>
 
         </div>
       </main>

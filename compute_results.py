@@ -28,10 +28,10 @@ if __name__ == "__main__":
 
     x = [0.0 for i in range(5 * 48)]
 
-    #x_forecast_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 14 * 48))
-    #net_demand_forecast_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 14 * 48))
-    #last_x_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 5 * 48))
-    #last_net_demand_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 5 * 48))
+    x_forecast_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 14 * 48))
+    net_demand_forecast_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 14 * 48))
+    last_x_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 5 * 48))
+    last_net_demand_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 5 * 48))
 
     for i in range((DAY_END - DAY_BEGIN) // ONE_STEP):
         print(i)
@@ -62,31 +62,29 @@ if __name__ == "__main__":
 
         x.append(x_forecast[1])
 
-        #x_forecast_memory[i,:] = x_forecast
-        #net_demand_forecast_memory[i,:] = two_next_weeks
-        #last_x_memory[i,:] = x
-        #last_net_demand_memory[i,:] = lt_1213.customers[0].net_load[(day - DATA_BEGIN) // ONE_STEP - 5*48 : (day-DATA_BEGIN) // ONE_STEP]
+        x_forecast_memory[i,:] = x_forecast
+        net_demand_forecast_memory[i,:] = two_next_weeks
+        last_x_memory[i,:] = x
+        last_net_demand_memory[i,:] = lt_1213.customers[0].net_load[(day - DATA_BEGIN) // ONE_STEP - 5*48 : (day-DATA_BEGIN) // ONE_STEP]
 
-        time_series_to_json(
-            time_series=two_last_weeks + two_next_weeks,
-            series_begin=day - 48 * 14 * ONE_STEP,
-            one_step=ONE_STEP,
-            file_name='static/net_demand.json'
-            )
+        # time_series_to_json(
+        #     time_series=two_last_weeks + two_next_weeks,
+        #     series_begin=day - 48 * 14 * ONE_STEP,
+        #     one_step=ONE_STEP,
+        #     file_name='static/net_demand.json'
+        #     )
+        #
+        # time_series_to_json(
+        #     time_series=x[(day-DATA_BEGIN) // ONE_STEP - 14*48 : (day-DATA_BEGIN) // ONE_STEP] + x_forecast[1:],
+        #     series_begin=day - 48 * 14 * ONE_STEP,
+        #     one_step=ONE_STEP,
+        #     file_name='static/x.json'
+        #     )
 
-        time_series_to_json(
-            time_series=x[(day-DATA_BEGIN) // ONE_STEP - 14*48 : (day-DATA_BEGIN) // ONE_STEP] + x_forecast[1:],
-            series_begin=day - 48 * 14 * ONE_STEP,
-            one_step=ONE_STEP,
-            file_name='static/x.json'
-            )
-
-
-
-    #np.save("save/x_forecast_memory", x_forecast_memory)
-    #np.save("save/net_demand_forecast_memory", net_demand_forecast_memory)
-    #np.save("save/last_x_memory", last_x_memory)
-    #np.save("save/last_net_demand_memory", last_net_demand_memory)
+    np.save("save/x_forecast_memory", x_forecast_memory)
+    np.save("save/net_demand_forecast_memory", net_demand_forecast_memory)
+    np.save("save/last_x_memory", last_x_memory)
+    np.save("save/last_net_demand_memory", last_net_demand_memory)
 
     #print(x_forecast_memory)
     #print(net_demand_forecast_memory)

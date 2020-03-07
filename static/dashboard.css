@@ -28,6 +28,21 @@
           width: 100%;
       }
 
+      @font-face {
+          font-family: "Rajdhani";
+          src: url('https://fonts.googleapis.com/css?family=Rajdhani') format("truetype");
+        }
+
+      .title-font  {
+        font-family: "Rajdhani";
+      }
+
+      .block-background {
+        /* background-image : linear-gradient(to bottom right, '#2a2a2b', '#3e3e40'); */
+        /* fill: url(#block-gradient); */
+        fill: url(#block-gradient) #447799;
+      }
+
       a:hover {
         font-weight: bold;
       }
@@ -66,9 +81,11 @@
           width: 400px;
           min-width: 300px;
           margin: 0 auto;
-          padding: 15px 0;
+          /* padding: 15 0; */
+          padding: 0.75% 0%;
           box-sizing: border-box;
           text-align: center;
+          font-family: "Rajdhani";
       }
 
       h1 {
@@ -92,10 +109,10 @@
         width : 730px;
      }
 
-     .price_plot {
+     /* .price_plot {
        height : 210px;
        width : 364px;
-    }
+    } */
 
      .svg_plot {
        height : 850px;
@@ -111,16 +128,19 @@
        right : 5px;
      }
 
-     .left_right {
+     /* .left_right {
        left : 370px;
-     }
+     } */
 
+     .first {
+       top : 6%;
+     }
      .second {
-       top : 385px;
+       top : 37.33%;
      }
 
      .third {
-       top : 705px;
+       top : 68.66%;
      }
 
       .chartContainer{

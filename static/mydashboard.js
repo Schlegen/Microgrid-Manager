@@ -1,5 +1,6 @@
 var chart_battery;
 var chart_net_demand;
+var chart_prices;
 
 function draw_charts (){ $.getJSON('/data',
   function draw_charts (response) {
@@ -127,6 +128,67 @@ function draw_charts (){ $.getJSON('/data',
     }
     ]
     });
+    window.chart_prices = Highcharts.chart('container3', {
+    chart: {
+      zoomType: 'x'
+    },
+    title: {
+      text: 'Prices'
+    },
+    subtitle: {
+      text: document.ontouchstart === undefined ?
+        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+    },
+    xAxis: {
+      type: 'datetime'
+    },
+    yAxis: {
+      title: {
+        text: 'Coût cumulé en euros'
+      }
+    },
+    legend: {
+      enabled: false
+    },
+    legend: {
+      enabled: false
+    },
+    plotOptions: {
+      area: {
+        fillColor: {
+          stops: [
+            [0, Highcharts.getOptions().colors[0]],
+            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+          ]
+        },
+        marker: {
+          radius: 2
+        },
+        lineWidth: 1,
+        states: {
+          hover: {
+            lineWidth: 1
+          }
+        },
+        threshold: null
+      }
+    },
+
+    series: [{
+      type: 'area',
+      name: 'Evolution des coûts jusqu\'à présent',
+      data: response.cost_so_far
+    },{
+      type: 'area',
+      name: 'Evolution des coûts sans batteries',
+      data: response.cost_without_battery
+    },{
+      type: 'area',
+      name: 'Evolution des coûts dans le cas clairvoyant',
+      data: response.cost_clairvoyant
+    }
+    ]
+    });
   }
 );
 }
@@ -136,15 +198,20 @@ function update_chart_net_demand (data_to_draw) {
   window.chart_net_demand.series[1].setData(data_to_draw.slice(14*48, 19*48));
 }
 
-
 function update_chart_battery (data_to_draw) {
   window.chart_battery.series[0].setData(data_to_draw.slice(9*48, 14*48));
   window.chart_battery.series[1].setData(data_to_draw.slice(14*48, 19*48));
 }
 
+function update_chart_prices (cost_so_far, cost_without_battery, cost_clairvoyant) {
+  window.chart_prices.series[0].setData(cost_so_far);
+  window.chart_prices.series[1].setData(cost_without_battery);
+  window.chart_prices.series[2].setData(cost_clairvoyant);
+}
+
 //----------------------------- treating the svg -------------------------------
 
-function set_triangle_sense (data) {
+function set_triangles (data) {
   let triangles = document.getElementsByClassName('triangle');
 
   let solar_pannels = document.getElementsByClassName('solar_pannel');
@@ -153,15 +220,13 @@ function set_triangle_sense (data) {
   let antenna = document.getElementsByClassName('antenna');
 
   let charging = data.battery[14*48 - 1][1] - data.battery[14*48 - 2][1];
-  let imported = data.imported; // gérer en Python
-  // let loss1 = (1/0.95 - 1) * charging;
-  // let loss2 = 0.05 * charging;
+  let imported = data.imported;
   let loss = 0
   if (charging > 0) {
     loss = (1/0.95 - 1) * charging;
   } else {
     loss = 0.05 * charging;
-  }
+  }update_chart_battery
   console.log("charge", charging, "import", imported, "demand", data.demand, "generation", data.generation, "loss", loss, "balance", -charging + imported - data.demand + data.generation);
 
 // ------------- arrows of the cable of battery --------------------------------
@@ -182,7 +247,7 @@ function set_triangle_sense (data) {
   } else {
     [].forEach.call(batter,
       function(elem, i, a) {
-        elem.style.transform = "rotate(0.5turn)";
+        elem.style.transform = "rotate(0turn)";
         elem.style.fill = '#00FF00';
       }
     );
@@ -207,7 +272,7 @@ function set_triangle_sense (data) {
   } else {
     [].forEach.call(antenna,
       function(elem, i, a) {
-        elem.style.transform = "rotate(0.5turn)";
+        elem.style.transform = "rotate(0turn)";
         elem.style.fill = '#00FF00';
       }
     );
@@ -236,6 +301,14 @@ function set_triangle_sense (data) {
     );
   }
 
+  if (data.generation == 0) {
+    [].forEach.call(solar_pannels,
+      function(elem, i, a) {
+        elem.style.fill = '#606063';
+      }
+    )
+  }
+
 }
 
 
@@ -245,7 +318,8 @@ function update_charts (){
     function (response) {
       update_chart_net_demand(response.net_demand);
       update_chart_battery(response.battery);
-      set_triangle_sense(response);
+      update_chart_prices(response.cost_so_far, response.cost_without_battery, response.cost_clairvoyant);
+      set_triangles(response);
     });
 }
 
@@ -253,4 +327,5 @@ function update_charts (){
 
 
 draw_charts();
-window.setInterval(update_charts, 8000);
+update_charts();
+window.setInterval(update_charts, 3000);

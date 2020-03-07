@@ -68,7 +68,7 @@ def forecast_two_next_weeks(two_last_weeks, res, length):
 
  ## ----------------- Prédiction des prix futurs -------------------------------
 
-def forecast_prices(time, p_purchase, p_sale, step):
+def forecast_prices(time, p_purchase, p_sale, step, n_days):
 
     day_begin = datetime(
         year=time.year,
@@ -83,7 +83,7 @@ def forecast_prices(time, p_purchase, p_sale, step):
     p_buy = np.concatenate((
         np.concatenate(
             (p_purchase[time_begin:],
-            np.tile(p_purchase,13)),
+            np.tile(p_purchase, n_days - 1)),
             axis=0
             ),
         p_purchase[:time_begin]),
@@ -93,7 +93,7 @@ def forecast_prices(time, p_purchase, p_sale, step):
     p_sell = np.concatenate((
         np.concatenate(
             (p_sale[time_begin:],
-            np.tile(p_sale,13)),
+            np.tile(p_sale, n_days - 1)),
             axis=0
             ),
         p_sale[:time_begin]),
