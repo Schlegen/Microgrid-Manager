@@ -16,14 +16,17 @@ from param import (
 )
 
 def evaluate_without_battery(p_sell, p_buy, net_demand):
-    """
-    p_sell is a tab containing the selling prices
-    p_buy is a tab containing the buying prices
-    net_load is the net load of the microgrid
-
-    this function evaluates the cost of the electricity on the microgrid
+    """ Evaluates the cost of the electricity on the microgrid
     if we had not the battery. In this case, we export the net_load when
     it is negative andwe import when it is positive.
+    
+    Arguments:
+        p_sell {tab of floats} -- selling prices for the period
+        p_buy {tab of floats} -- buying prices for the period
+        net_demand {tab of floats} -- net load of the microgrid for the period
+
+     Returns:
+        tab of float -- tab containing the cumulative cost of the case without battery
     """
     cost = [0]
     for i in range(len(net_demand)):
@@ -34,16 +37,19 @@ def evaluate_without_battery(p_sell, p_buy, net_demand):
         else:
             cost.append(cost[-1] + p_sell[i] * net_demand[i])
 
-    return(cost)
+    return cost
 
 def evaluate_clairvoyant(p_sell, p_buy, net_demand):
-    """
-    p_sell is a tab containing the selling prices
-    p_buy is a tab containing the buying prices
-    net_load is the net load of the microgrid
-
-    this function evaluates the cost of the electricity on the microgrid
-    if the solution were optimal
+    """this function evaluates the cost of the electricity on the microgrid
+    if the prediction were optimal
+    
+    Arguments:
+        p_sell {tab of floats} -- selling prices for the period
+        p_buy {tab of floats} -- buying prices for the period
+        net_demand {tab of floats} -- net load of the microgrid for the period
+    
+    Returns:
+        tab of float -- tab containing the cumulative cost of the clairvoyant case
     """
     cost = [0]
 

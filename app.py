@@ -54,10 +54,28 @@ cost_clairvoyant = evaluate_clairvoyant(
 
 @app.route("/")
 def hello():
+    """The only page of the site
+    
+    Returns:
+        render_template -- html page corresponding to the dashboard
+    """
     return render_template('dashboard.html')
 
 @app.route('/data')
 def get_data():
+    """    
+    At each call, we compute the new optimal battery storage. 
+    With a global Value called last_execution, we control that this new value is only 
+    computed once in 3 seconds (in order to not overheat the computer).
+
+    The method for one step is:
+        - We forecast the net_demand of the microgrid for the two next weeks.
+        - We apply the optimization problem to get the optimal charge of the battery given the prediction.
+        - For th emicrogrid, we retain the first value of the charge and we apply it
+
+    Returns:
+        Json -- all the data necessary to draw the charts in the dashboard
+    """
     global i
     global last_execution
     global last_dico
@@ -138,6 +156,8 @@ def get_data():
         return(last_dico)
 
 def open_browser():
+    """ Open the dashboard in the navigator
+    """
     webbrowser.open_new('http://127.0.0.1:5000/')
 
 if __name__ == "__main__":

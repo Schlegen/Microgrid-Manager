@@ -18,11 +18,24 @@
   --> DONE
 6) adapter la taille des rectangles à la taille de la fenêtre.
   --> DONE
-7) animer cable de l'eolienne
+7) animer cable du panneau solaire
   --> DONE
 8) faire en sorte que la fonction marche du premier coup
   -->
 9) Animer le SVG (charge)
+  --> DONE
+10) commenter les fonctions
+  --> DONE EN PARTIE
+11) faire le readme
+  -->
+12) tracer les graphes
+  -->
+13) Tester la fonction de prédiction des prix
+  -->
+14) changer les fichiers plot et compute.
+  -->
+15) Requirement.txt ??
+  -->
 
 nom de la méthode = model predictive control -> Bertskas
 

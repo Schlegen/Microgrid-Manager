@@ -13,7 +13,7 @@ from datetime import date, datetime, timedelta
 lt_1213 = load_data_frame("save/customers1213.txt")
 data_train = lt_1213.customers[0].net_load[0:14*48]
 
-# parameters
+# parameters of the problem
 RHO_C = 0.95
 RHO_D = 0.95
 U_LOW = -2.5

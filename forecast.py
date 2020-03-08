@@ -12,7 +12,7 @@ from param import lt_1213, data_train, REFIT_MODEL
 
 ## ------------------- Prédiction de la demande nette -------------------------
 
-# -------------------- choix des paramètres -----------------------------------
+# -------------------- Choice of the Parameters -------------------------------
 
 if REFIT_MODEL:
 
@@ -26,7 +26,7 @@ if REFIT_MODEL:
     D = 1
     Q = 0
 
-# ------------------- calibration du modèle ------------------------------------
+# ------------------- fitting of the model ------------------------------------
 
     mod = SARIMAX(
         endog=data_train ,
@@ -57,18 +57,39 @@ else:
 
     res = SARIMAXResults.load('save/prediction_model.pkl')
 
-# ------------------- fonction de prédiction -----------------------------------
+# ------------------------------ Prediction -----------------------------------
 
 def forecast_two_next_weeks(two_last_weeks, res, length):
-    """
+    """Predicts the two next weeks of a time series from the last two weeks using
+     the SARIMAX method above
+    
+    Arguments:
+        two_last_weeks {float tab} -- Two last weeks of the time series from which we predict 
+        res {statsmodels.tsa.statespace.sarimax.SARIMAXResults} -- prediction model (defined above)
+        length {int} -- length of the prediction
+
+    Returns:
+        float np.array -- forecast of the next values of the time series
+    
     """
     res_test = res.apply(two_last_weeks, refit=False)
-    return(res_test.forecast(length))
 
-
- ## ----------------- Prédiction des prix futurs -------------------------------
+    return res_test.forecast(length)
 
 def forecast_prices(time, p_purchase, p_sale, step, n_days):
+    """Predicts the prices for the n_days following the date time
+    
+    Arguments:
+        time {datetime} -- time from which we predict the prices
+        p_purchase {float tab} -- tab containing the 
+        p_sale {float tab} -- [description]
+        step {datetime.timedelta} -- [description]
+        n_days {int} -- number 
+
+    Returns:
+        float np.array -- prices of import for the coming n_days 
+        float np.array -- prices of export for the coming n_days
+    """
 
     day_begin = datetime(
         year=time.year,
@@ -100,4 +121,4 @@ def forecast_prices(time, p_purchase, p_sale, step, n_days):
         axis=0
     )
 
-    return(p_buy, p_sell)
+    return p_buy, p_sell

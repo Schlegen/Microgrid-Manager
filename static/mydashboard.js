@@ -133,7 +133,7 @@ function draw_charts (){ $.getJSON('/data',
       zoomType: 'x'
     },
     title: {
-      text: 'Prices'
+      text: 'Prix'
     },
     subtitle: {
       text: document.ontouchstart === undefined ?
@@ -211,7 +211,7 @@ function update_chart_prices (cost_so_far, cost_without_battery, cost_clairvoyan
 
 //----------------------------- treating the svg -------------------------------
 
-function set_triangles (data) {
+function set_svg (data) {
   let triangles = document.getElementsByClassName('triangle');
 
   let solar_pannels = document.getElementsByClassName('solar_pannel');
@@ -221,13 +221,15 @@ function set_triangles (data) {
 
   let charging = data.battery[14*48 - 1][1] - data.battery[14*48 - 2][1];
   let imported = data.imported;
-  let loss = 0
+  let loss = 0;
   if (charging > 0) {
     loss = (1/0.95 - 1) * charging;
   } else {
     loss = 0.05 * charging;
-  }update_chart_battery
-  console.log("charge", charging, "import", imported, "demand", data.demand, "generation", data.generation, "loss", loss, "balance", -charging + imported - data.demand + data.generation);
+  }
+  let battery_state = data.battery[14*48 - 1][1];
+
+  console.log("charge", charging, "import", imported, "demand", data.demand, "generation", data.generation, "loss", loss, "balance", -charging + imported - data.demand + data.generation, "battery state", battery_state);
 
 // ------------- arrows of the cable of battery --------------------------------
   if (charging > 0) {
@@ -240,14 +242,13 @@ function set_triangles (data) {
   } else if (charging == 0) {
     [].forEach.call(batter,
       function(elem, i, a) {
-        elem.style.transform = "rotate(0)";
         elem.style.fill = '#606063';
       }
     );
   } else {
     [].forEach.call(batter,
       function(elem, i, a) {
-        elem.style.transform = "rotate(0turn)";
+        elem.style.transform = "rotate(0)";
         elem.style.fill = '#00FF00';
       }
     );
@@ -265,31 +266,33 @@ function set_triangles (data) {
   } else if (imported == 0) {
     [].forEach.call(antenna,
       function(elem, i, a) {
-        elem.style.transform = "rotate(0)";
         elem.style.fill = '#606063';
       }
     );
   } else {
     [].forEach.call(antenna,
       function(elem, i, a) {
-        elem.style.transform = "rotate(0turn)";
+        elem.style.transform = "rotate(0)";
         elem.style.fill = '#00FF00';
       }
     );
   }
 
   // ----------------------- used by the house ---------------------------------
-  $("#tspan330-3").text(String(Math.round(data.demand *100) / 100.0 ).concat(" kWh"));
+  $("#tspan330-3").text(String(Math.round(data.demand * 100) / 100.0).concat(" kWh"));
 
   //------------------------ charged by the battery ----------------------------
-  $("#tspan330-3-8-9").text(String(Math.round(charging *100) / 100.0 ).concat(" kWh"));
+  $("#tspan330-3-8-9").text(String(Math.round(charging * 100) / 100.0).concat(" kWh"));
 
   //------------------------ imported from the outside -------------------------
-  $("#tspan330").text(String(Math.round(imported *100) / 100.0 ).concat(" kWh"));
+  $("#tspan330").text(String(Math.round(imported * 100) / 100.0).concat(" kWh"));
 
   //------------------------ produced by the solar pannel ----------------------
-  $("#tspan330-3-8").text(String(Math.round(data.generation *100) / 100.0 ).concat(" kWh"));
+  $("#tspan330-3-8").text(String(Math.round(data.generation * 100) / 100.0).concat(" kWh"));
 
+  //------------------------ in the battery ------------------------------------
+
+  $("#tspan330-3-8-9-7").text(String(Math.round(battery_state * 100) / 100.0).concat(" kW"));
 
 
 // ---------- arrows in direction of the delivery point ------------------------
@@ -306,11 +309,41 @@ function set_triangles (data) {
       function(elem, i, a) {
         elem.style.fill = '#606063';
       }
-    )
+    );
+  } else {
+    [].forEach.call(solar_pannels,
+      function(elem, i, a) {
+        elem.style.fill = '#00ff00';
+      }
+    );
+  }
+
+// ---------- battery filling --------------------------------------------------
+
+  if (battery_state == 0) {
+
+    document.getElementById("rect_bottom_battery_state").style.fill = "#e7eced";
+    document.getElementById("rect_middle_battery_state").setAttribute("height", "0");
+    document.getElementById("rect_middle_battery_state").setAttribute("y", "55.8781084");
+    document.getElementById("rect_top_battery_state").style.fill = "#e7eced";
+
+  } else if ( Math.round(battery_state * 20) == 100) {
+
+    document.getElementById("rect_bottom_battery_state").style.fill = "#00ff00";
+    document.getElementById("rect_middle_battery_state").style.y = "5.9122534";
+    document.getElementById("rect_middle_battery_state").style.height = "49.965855";
+    document.getElementById("rect_top_battery_state").style.fill = "#00ff00";
+
+  } else {
+
+    document.getElementById("rect_bottom_battery_state").style.fill = "#00ff00";
+    document.getElementById("rect_middle_battery_state").setAttribute("height", String(49.965855 * Math.round(battery_state * 20) / 100));
+    document.getElementById("rect_middle_battery_state").setAttribute("y", String(5.9122534 + 49.965855 * (1 - Math.round(battery_state * 20) / 100)));
+    document.getElementById("rect_top_battery_state").style.fill = "#e7eced";
+
   }
 
 }
-
 
 // ------------------- update ---------------------------------------------
 function update_charts (){
@@ -319,12 +352,9 @@ function update_charts (){
       update_chart_net_demand(response.net_demand);
       update_chart_battery(response.battery);
       update_chart_prices(response.cost_so_far, response.cost_without_battery, response.cost_clairvoyant);
-      set_triangles(response);
+      set_svg(response);
     });
 }
-
-
-
 
 draw_charts();
 update_charts();
