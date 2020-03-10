@@ -30,7 +30,9 @@ DATA_BEGIN = datetime(year=2012, month=7, day=1, hour=0, minute=0)
 
 # beginning of the simulation
 DAY_BEGIN = datetime(year=2012, month=7, day=15, hour=0, minute=0)
-DAY_END = datetime(year=2012, month=7, day=30, hour=0, minute=0)
+
+#end of the simulation that will be saved
+DAY_END = datetime(year=2012, month=8, day=14, hour=0, minute=0)
 ONE_STEP = timedelta(minutes=30)
 
 # Deciding whether we refit the forecasting model

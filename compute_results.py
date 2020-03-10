@@ -27,8 +27,10 @@ from optimisation import solve_optim
 if __name__ == "__main__":
 
     x = [0.0 for i in range(5 * 48)]
+    cost = [0]
+    u = []
 
-    x_forecast_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 14 * 48))
+    x_forecast_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 14 * 48-1))
     net_demand_forecast_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 14 * 48))
     last_x_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 5 * 48))
     last_net_demand_memory = np.zeros(((DAY_END - DAY_BEGIN) // ONE_STEP, 5 * 48))
@@ -40,7 +42,7 @@ if __name__ == "__main__":
         two_last_weeks = lt_1213.customers[0].net_load[(day-DATA_BEGIN) // ONE_STEP - 14*48 : (day-DATA_BEGIN) // ONE_STEP]
 
         two_next_weeks = forecast_two_next_weeks(two_last_weeks, res, 14*48)
-        p_buy, p_sell = forecast_prices(day, P_PURCHASE, P_SALE, step=ONE_STEP)
+        p_buy, p_sell = forecast_prices(day, P_PURCHASE, P_SALE, step=ONE_STEP, n_days=14)
 
         dict_var = solve_optim(
             forecast=two_next_weeks,
@@ -58,33 +60,29 @@ if __name__ == "__main__":
 
         #advised_battery_load = [dict_var['battery_load_' + str(i)] for i in range(len(two_next_weeks)-1)]
 
-        x_forecast = [dict_var['battery_state_' + str(i)] for i in range(len(two_next_weeks)-1)]
+        x_forecast = [dict_var['battery_state_' + str(i)] for i in range(1, len(two_next_weeks))]
+        print(dict_var['battery_load_positive_part_0'], dict_var['battery_load_negative_part_0'])
+        u.append(dict_var['battery_load_positive_part_0'] - dict_var['battery_load_negative_part_0'])
+
+        # imported = (x[-1] - x[-2] + two_last_weeks[-1])
+        #
+        # if imported > 0:
+        #     cost.append(cost[-1] + imported * p_buy[0])
+        # else:
+        #     cost.append(cost[-1] + imported * p_sell[0])
 
         x.append(x_forecast[1])
 
         x_forecast_memory[i,:] = x_forecast
         net_demand_forecast_memory[i,:] = two_next_weeks
-        last_x_memory[i,:] = x
+        last_x_memory[i,:] = x[-5*48:]
         last_net_demand_memory[i,:] = lt_1213.customers[0].net_load[(day - DATA_BEGIN) // ONE_STEP - 5*48 : (day-DATA_BEGIN) // ONE_STEP]
-
-        # time_series_to_json(
-        #     time_series=two_last_weeks + two_next_weeks,
-        #     series_begin=day - 48 * 14 * ONE_STEP,
-        #     one_step=ONE_STEP,
-        #     file_name='static/net_demand.json'
-        #     )
-        #
-        # time_series_to_json(
-        #     time_series=x[(day-DATA_BEGIN) // ONE_STEP - 14*48 : (day-DATA_BEGIN) // ONE_STEP] + x_forecast[1:],
-        #     series_begin=day - 48 * 14 * ONE_STEP,
-        #     one_step=ONE_STEP,
-        #     file_name='static/x.json'
-        #     )
 
     np.save("save/x_forecast_memory", x_forecast_memory)
     np.save("save/net_demand_forecast_memory", net_demand_forecast_memory)
     np.save("save/last_x_memory", last_x_memory)
     np.save("save/last_net_demand_memory", last_net_demand_memory)
+    np.save("save/u", np.array(u))
 
     #print(x_forecast_memory)
     #print(net_demand_forecast_memory)

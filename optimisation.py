@@ -8,7 +8,7 @@ import pulp
 
 def solve_optim(forecast, rho_c, rho_d, u_low, u_up, x_low, x_up, last_x, p_buy, p_sell, index):
     """Given a forecast, and parameters of the problem, compute the battery management that minimizes the cost for the period of the forecast
-    
+
     Arguments:
         forecast {float np.array} -- net demand forecast
         rho_c {float} -- parameters that modelize the Joule effect when the battery charges
@@ -20,8 +20,8 @@ def solve_optim(forecast, rho_c, rho_d, u_low, u_up, x_low, x_up, last_x, p_buy,
         last_x {float} -- charge of the battery when we solve the problem
         p_buy {float np.array} -- import prices for the duration of the forecast
         p_sell {float np.array} -- export prices for the duration of the forecast
-        index {int} -- Index that identifies 
-    
+        index {int} -- Index that identifies
+
     Returns:
         dictionary -- contains the values all the solution variables
     """
@@ -119,5 +119,7 @@ def solve_optim(forecast, rho_c, rho_d, u_low, u_up, x_low, x_up, last_x, p_buy,
     varsdict = {}
     for v in model.variables():
         varsdict[v.name] = v.varValue
+
+    #print(pulp.value(model.objective))
 
     return varsdict

@@ -27,7 +27,7 @@ from param import (
 )
 from forecast import res, forecast_two_next_weeks, forecast_prices
 from optimisation import solve_optim
-from evaluate_price import evaluate_without_battery, evaluate_clairvoyant
+from evaluate_cost import evaluate_without_battery, evaluate_clairvoyant
 
 app = Flask(__name__)
 
@@ -55,7 +55,7 @@ cost_clairvoyant = evaluate_clairvoyant(
 @app.route("/")
 def hello():
     """The only page of the site
-    
+
     Returns:
         render_template -- html page corresponding to the dashboard
     """
@@ -63,9 +63,9 @@ def hello():
 
 @app.route('/data')
 def get_data():
-    """    
-    At each call, we compute the new optimal battery storage. 
-    With a global Value called last_execution, we control that this new value is only 
+    """
+    At each call, we compute the new optimal battery storage.
+    With a global Value called last_execution, we control that this new value is only
     computed once in 3 seconds (in order to not overheat the computer).
 
     The method for one step is:
@@ -123,12 +123,14 @@ def get_data():
 
         x_forecast = np.array([dict_var['battery_state_' + str(k)] for k in range(len(two_next_weeks)-1)])
 
+
         net_demand = np.concatenate((two_last_weeks, two_next_weeks))
         battery = np.concatenate((x[-14*48:], x_forecast[1:]))
         series_begin = day - 48 * 14 * ONE_STEP
 
         x.append(x_forecast[1])
 
+        #A modifier
         cost_so_far.append(
             cost_so_far[-1] + dict_var['delivery_positive_part_0'] * p_buy[0] - dict_var['delivery_negative_part_0'] * p_sell[0]
         )
