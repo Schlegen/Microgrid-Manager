@@ -16,6 +16,8 @@ This method uses the command predictive control method: at every step:
 
 To have more details about this project, I invite you to read my report, in the .pdf file.
 
+The main language used here is Python (with Numpy, Matplotlib, statsmodels, Pulp, Flask) but I also use HTML, JS and CSS for the dashboard
+
 This method presents various file among which, what may be the most interesting are :
   - `param.py`, where is saved all the configuration of the file
   - `forecast.py`, containing the prediction methods
@@ -33,15 +35,13 @@ You'll have to execute either app.py, plot.py, compute_result.py
 
 Once you've cloned the program, before your first execution, please set `REFIT_MODEL` to `True` in the file `param.py`. It will compute the fitted model for the prediction method and save it in a .pkl file in the save folder. Then, you can set `REFIT_MODEL` to `False` again.
 
-### Tests sur un mois
 
-8) faire en sorte que la fonction marche du premier coup
-  -->
+## The data
+
+The data comes from the website of the Australian compagny Ausgrid.com. [CLick here for the data](https://www.ausgrid.com.au/Industry/Our-Research/Data-to-share/Solar-home-electricity-data)
+
+
+## TODO
+
 10) commenter les fonctions
   --> DONE EN PARTIE
-11) faire le readme
-  -->
-15) Requirement.txt
-  -->
-
-nom de la méthode = model predictive control -> Bertskas

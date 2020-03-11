@@ -1,7 +1,3 @@
-var chart_battery;
-var chart_net_demand;
-var chart_prices;
-
 function draw_charts (){ $.getJSON('/data',
   function draw_charts (response) {
     window.chart_battery = Highcharts.chart('container1', {
@@ -229,7 +225,7 @@ function set_svg (data) {
   }
   let battery_state = data.battery[14*48 - 1][1];
 
-  console.log("charge", charging, "import", imported, "demand", data.demand, "generation", data.generation, "loss", loss, "balance", -charging + imported - data.demand + data.generation, "battery state", battery_state);
+  // console.log("charge", charging, "import", imported, "demand", data.demand, "generation", data.generation, "loss", loss, "balance", -charging + imported - data.demand + data.generation, "battery state", battery_state);
 
 // ------------- arrows of the cable of battery --------------------------------
   if (charging > 0) {

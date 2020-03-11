@@ -107,7 +107,7 @@ def plot_battery_time(i, x_forecast_memory, net_demand_forecast_memory, last_x_m
 
     ax1.plot([instant + k * ONE_STEP for k in range(len(net_demand_forecast))], net_demand_forecast, color="DarkOrange", label="Prédiction")
     ax1.plot([instant + (- 5*48 + k) * ONE_STEP for k in range(len(previous_net_demand))], previous_net_demand, color="Blue", label="Passé")
-    ax1.set_title("Demande dette passée et prédite le " + instant.strftime("%m/%d/%Y à %H:%M"))
+    ax1.set_title("Demande nette passée et prédite le " + instant.strftime("%m/%d/%Y à %H:%M"))
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d %H:%M'))
     fig.autofmt_xdate()
     ax1.legend(bbox_to_anchor=(0.8, 0.8))
@@ -121,7 +121,7 @@ def plot_battery_time(i, x_forecast_memory, net_demand_forecast_memory, last_x_m
 
     ax2.plot([instant + k * ONE_STEP for k in range(len(x_forecast))], x_forecast, color="DarkOrange", label="Prediction")
     ax2.plot([instant + (k - 5 * 48) * ONE_STEP for k in range(len(previous_x))], previous_x, color="Blue", label="Passé")
-    ax2.set_title("Trajectoire de la charge de la batterie le " + instant.strftime("%m/%d/%Y à %H:%M"))
+    ax2.set_title("Trajectoire de la charge le " + instant.strftime("%m/%d/%Y à %H:%M"))
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %d - %Hh'))
     ax2.legend(bbox_to_anchor=(0.8, 0.8))
     plt.show()
@@ -220,7 +220,7 @@ def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, l
         ax2.set_xlim(-5 * 48, 14 * 48)
         lines2[1].set_data([ int((k * ONE_STEP).total_seconds()) // 1800 for k in range(len(net_demand_forecast))], net_demand_forecast)
         lines2[2].set_data([ int((k * ONE_STEP).total_seconds()) // 1800 - 5 *48 for k in range(len(previous_net_demand))], previous_net_demand)
-        lines2[0].set_text("Demande dette passée et predite le " + instant.strftime("%m/%d/%Y à %H:%M"))
+        lines2[0].set_text("Demande nette passée et prédite le " + instant.strftime("%m/%d/%Y à %H:%M"))
         return lines2
 
     ani = [
@@ -265,6 +265,8 @@ def plot_cost(u):
     fig.autofmt_xdate()
     plt.show()
 
+    print(cost_clairvoyant[-1], cost[-1], cost_without_battery[-1])
+
 
 if __name__ == "__main__":
 
@@ -281,6 +283,6 @@ if __name__ == "__main__":
     u = np.load("save/u.npy")
 
     #plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
-    #plot_battery_time(4 * 48, x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
+    plot_battery_time(8 * 48, x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
     #plot_battery_one_day(2 * 48, x_forecast_memory, net_demand_forecast_memory)
-    plot_cost(u)
+    #plot_cost(u)
