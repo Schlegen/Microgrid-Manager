@@ -253,7 +253,6 @@ def plot_cost(u):
         u=u,
         net_demand=lt_1213.customers[0].net_load[(DAY_BEGIN-DATA_BEGIN) // ONE_STEP : (DAY_BEGIN-DATA_BEGIN) // ONE_STEP + 30 * 48 + 1]
         )
-
     fig, ax = plt.subplots(1,1)
     ax.plot([DAY_BEGIN + k * ONE_STEP for k in range(len(cost_without_battery))], cost_without_battery, color="Green", label="Sans batterie")
     ax.plot([DAY_BEGIN + k * ONE_STEP for k in range(len(cost))], cost, color="Blue", label="Commande prédictive")

@@ -37,7 +37,7 @@ last_dico = None
 cost_so_far = [0]
 i = -1
 x = [0.0 for j in range((DAY_BEGIN - DATA_BEGIN) // ONE_STEP )]
-
+u = [0.0 for j in range((DAY_BEGIN - DATA_BEGIN) // ONE_STEP )]
 p_buy_30, p_sell_30 = forecast_prices(DAY_BEGIN, P_PURCHASE, P_SALE, step=ONE_STEP, n_days=30)
 cost_without_battery = evaluate_without_battery(
     p_sell=p_sell_30,
@@ -49,7 +49,6 @@ cost_clairvoyant = evaluate_clairvoyant(
     p_sell=p_sell_30,
     p_buy=p_buy_30,
     net_demand=lt_1213.customers[0].net_load[(DAY_BEGIN-DATA_BEGIN) // ONE_STEP : (DAY_BEGIN-DATA_BEGIN) // ONE_STEP + 30 * 48 + 1]
-
 )
 
 @app.route("/")
@@ -81,6 +80,7 @@ def get_data():
     global last_dico
     global x
     global cost_so_far
+    global u
 
     if i == -1 or time() - last_execution > 3:
         print(i)
@@ -91,9 +91,6 @@ def get_data():
         two_last_weeks = lt_1213.customers[0].net_load[(day-DATA_BEGIN) // ONE_STEP - 14*48 : (day-DATA_BEGIN) // ONE_STEP]
 
         two_next_weeks = forecast_two_next_weeks(two_last_weeks, res, 14*48)
-
-#lt_1213.customers[0].net_load[(day-DATA_BEGIN) // ONE_STEP : (day-DATA_BEGIN) // ONE_STEP + 14*48 ]
-#forecast_two_next_weeks(two_last_weeks, res, 14*48)
 
         p_buy, p_sell = forecast_prices(day, P_PURCHASE, P_SALE, step=ONE_STEP, n_days=14)
 
@@ -106,6 +103,12 @@ def get_data():
             loss = 0.05 * charging
 
         imported = charging + two_last_weeks[-1] + loss
+
+        if i > 1:
+            if imported > 0:
+                cost_so_far.append(cost_so_far[-1] + imported * p_buy[-2])
+            else:
+                cost_so_far.append(cost_so_far[-1] + imported * p_sell[-2])
 
         dict_var = solve_optim(
             forecast=two_next_weeks,
@@ -129,11 +132,7 @@ def get_data():
         series_begin = day - 48 * 14 * ONE_STEP
 
         x.append(x_forecast[1])
-
-        #A modifier
-        cost_so_far.append(
-            cost_so_far[-1] + dict_var['delivery_positive_part_0'] * p_buy[0] - dict_var['delivery_negative_part_0'] * p_sell[0]
-        )
+        u.append(dict_var['battery_load_positive_part_0'] - dict_var['battery_load_negative_part_0'])
 
         # in the dictionary, we give the prediction as well as the relevant values for the last 30 minutes( in order to update the scheme)
         dico = {
@@ -143,9 +142,9 @@ def get_data():
             "generation" : lt_1213.customers[0].GG[(day-DATA_BEGIN) // ONE_STEP - 1],
             "demand" : lt_1213.customers[0].GC[(day-DATA_BEGIN) // ONE_STEP - 1],
             "imported" : imported,
-            "cost_without_battery" : [[(DAY_BEGIN + j * ONE_STEP).replace(tzinfo=timezone.utc).timestamp()*1000, cost_without_battery[j]] for j in range(min(len(cost_without_battery), i + 2))],
+            "cost_without_battery" : [[(DAY_BEGIN + j * ONE_STEP).replace(tzinfo=timezone.utc).timestamp()*1000, cost_without_battery[j]] for j in range(min(len(cost_without_battery), i))],
             "cost_so_far" : [[(DAY_BEGIN + j * ONE_STEP).replace(tzinfo=timezone.utc).timestamp()*1000, cost_so_far[j]] for j in range(len(cost_so_far))],
-            "cost_clairvoyant" : [[(DAY_BEGIN + j * ONE_STEP).replace(tzinfo=timezone.utc).timestamp()*1000, cost_clairvoyant[j]] for j in range(min(len(cost_clairvoyant), i + 2))]
+            "cost_clairvoyant" : [[(DAY_BEGIN + j * ONE_STEP).replace(tzinfo=timezone.utc).timestamp()*1000, cost_clairvoyant[j]] for j in range(min(len(cost_clairvoyant), i))]
             }
 
         last_execution = time()

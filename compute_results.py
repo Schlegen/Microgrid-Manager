@@ -63,14 +63,6 @@ if __name__ == "__main__":
         x_forecast = [dict_var['battery_state_' + str(i)] for i in range(1, len(two_next_weeks))]
         print(dict_var['battery_load_positive_part_0'], dict_var['battery_load_negative_part_0'])
         u.append(dict_var['battery_load_positive_part_0'] - dict_var['battery_load_negative_part_0'])
-
-        # imported = (x[-1] - x[-2] + two_last_weeks[-1])
-        #
-        # if imported > 0:
-        #     cost.append(cost[-1] + imported * p_buy[0])
-        # else:
-        #     cost.append(cost[-1] + imported * p_sell[0])
-
         x.append(x_forecast[1])
 
         x_forecast_memory[i,:] = x_forecast

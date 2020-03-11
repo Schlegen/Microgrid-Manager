@@ -1,47 +1,44 @@
 # Microgrid-Manager
 
-## TODO :
+## Introduction
+
+This project is an academic project carried out during the second semester of 2019-2020.
+I worked on this project alone and was overseen by a Phd student, Adrien Le Franc.
+
+The goal of this project is to manage a battery in a microgrid fitted with a solar pannel.
+
+This method uses the command predictive control method: at every step:
+  1. we predict the net demand (difference between the demand and the production) in the microgrid for two weeks
+  2. we set the trajectory battery load in order to minimize the total cost.
+  3. only the first value of the prescription is retained
+
+To have more details about this project, I invite you to read my report, in the .pdf file.
+
+This method presents various file among which, what may be the most interesting are :
+  - `param.py`, where is saved all the configuration of the file
+  - `forecast.py`, containing the prediction methods
+  - `optimisation.py`, containing the optimisation problem
+  - `compute_result.py` that saves the interesting results for plot in .npy files
+  - `plot.py` where we can draw the plot that appear in my report
+  - `app.py` that **launches the dashboard**
+
+You'll have to execute either app.py, plot.py, compute_result.py
+
+![alt text](shema_simplified.svg)
+
+## First execution
+
+Once you've cloned the program, before your first execution, please set `REFIT_MODEL` to `True` in the file `param.py`. It will compute the fitted model for the prediction method and save it in a .pkl file in the save folder. Then, you can set `REFIT_MODEL` to `False` again.
 
 ### Tests sur un mois
 
-0) changer les conditions initiales dans le problème d'optimisation
-  --> Peut-être, mais de toute facon, l'optim prend que 0.3 secondes donc pas nécessaire
-1) calculer ce que la solution fournie (avec batterie) nous permet de payer
-  --> DONE
-2) calculer le prix sur un mois de la solution sans batterie.
-  --> DONE
-3) calculer le prix sur un mois de la solution clairvoyante.
-  --> DONE
-4) ploter les trois sur le dernier graphe du dashboard.
-  --> DONE
-5) Animer le svg (triangle).
-  --> DONE
-6) adapter la taille des rectangles à la taille de la fenêtre.
-  --> DONE
-7) animer cable du panneau solaire
-  --> DONE
 8) faire en sorte que la fonction marche du premier coup
   -->
-9) Animer le SVG (charge)
-  --> DONE
 10) commenter les fonctions
   --> DONE EN PARTIE
 11) faire le readme
   -->
-12) tracer les graphes
-  -->
-13) Tester la fonction de prédiction des prix
-  -->
-14) changer les fichiers plot et compute.
-  -->
-15) Requirement.txt ??
+15) Requirement.txt
   -->
 
 nom de la méthode = model predictive control -> Bertskas
-
-## Plan du rapport
-1) Les données : La microgrid et les variables et l'allure des courbes
-2) La méthode
-3) Pb d'optimisation
-4) comparaison avec les différents cas
-5) interface graphique

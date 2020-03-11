@@ -248,7 +248,7 @@ function set_svg (data) {
   } else {
     [].forEach.call(batter,
       function(elem, i, a) {
-        elem.style.transform = "rotate(0)";
+        elem.style.transform = "rotate(0turn)";
         elem.style.fill = '#00FF00';
       }
     );
@@ -296,13 +296,6 @@ function set_svg (data) {
 
 
 // ---------- arrows in direction of the delivery point ------------------------
-  if (imported < 0) {
-    [].forEach.call(batter,
-      function(elem, i, a) {
-        elem.style.transform = "rotate(0.5turn)";
-      }
-    );
-  }
 
   if (data.generation == 0) {
     [].forEach.call(solar_pannels,
