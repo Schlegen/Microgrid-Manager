@@ -12,6 +12,8 @@ This method uses the command predictive control method: at every step:
   2. we set the trajectory battery load in order to minimize the total cost.
   3. only the first value of the prescription is retained
 
+![alt text](shema.png)
+
 To have more details about this project, I invite you to read my report, in the .pdf file.
 
 This method presents various file among which, what may be the most interesting are :
@@ -24,7 +26,8 @@ This method presents various file among which, what may be the most interesting 
 
 You'll have to execute either app.py, plot.py, compute_result.py
 
-![alt text](shema_simplified.svg)
+
+![alt text](dashboard.png)
 
 ## First execution
 
