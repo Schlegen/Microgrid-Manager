@@ -25,6 +25,11 @@ from statsmodels.graphics.tsaplots import plot_acf
 from evaluate_cost import evaluate_without_battery, evaluate_clairvoyant, evaluate
 
 def plot_demand(day_begin_plot):
+    """Plots 3 days of demand
+    
+    Arguments:
+        day_begin_plot {datetime} -- The date from which the plot starts
+    """
     fig1, ax1 = plt.subplots(1, 1, figsize=(18, 4))
     ax1.set_xlabel('Date')
     ax1.set_ylabel('Demande Electrique (kWh)')
@@ -39,6 +44,11 @@ def plot_demand(day_begin_plot):
     plt.show()
 
 def plot_net_demand(day_begin_plot):
+    """Plots 3 days of net demand
+    
+    Arguments:
+        day_begin_plot {datetime} -- The date from which the plot starts
+    """
     fig1, ax1 = plt.subplots(1, 1, figsize=(18, 4))
     ax1.set_xlabel('Date')
     ax1.set_ylabel('Demande Nette (kWh)')
@@ -53,6 +63,11 @@ def plot_net_demand(day_begin_plot):
     plt.show()
 
 def plot_generation(day_begin_plot):
+    """Plots 3 days of electric generation with the solar pannel
+    
+    Arguments:
+        day_begin_plot {datetime} -- The date from which the plot starts
+    """
     fig1, ax1 = plt.subplots(1, 1, figsize=(18, 4))
     ax1.set_xlabel('Date')
     ax1.set_ylabel('Generation Electrique (kWh)')
@@ -67,7 +82,11 @@ def plot_generation(day_begin_plot):
     plt.show()
 
 def plot_prices(day_begin_plot):
-
+    """Plots the prices in the microgrid
+    
+    Arguments:
+        day_begin_plot {datetime} -- The date from which the plot starts
+    """
     fig1, ax1 = plt.subplots(1, 1, figsize=(18, 4))
     ax1.set_xlabel('Heure')
     ax1.set_ylabel('Prix (\u20ac/kWh)')
@@ -90,11 +109,22 @@ def plot_prices(day_begin_plot):
     plt.show()
 
 def plot_correlogram_net_demand():
+    """Plots the autocorrelogram of the net demand
+    """
     fig, ax= plt.subplots(1, 1, figsize=(18, 5))
     plot_acf(lt_1213.customers[0].net_load, ax, title="Autocorrélogramme de l'échantillon (calculé sur un an)", lags=48*10)
     plt.show()
 
 def plot_battery_time(i, x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory):
+    """Plots the net_demand (past and prediction) and the battery charge(past and prediction) for several days
+    
+    Arguments:
+        i {int} -- index of the day where begins the plot
+        x_forecast_memory {np.array} -- loaded version of"save/x_forecast_memory.npy"
+        net_demand_forecast_memory {np.array} -- loaded version of"save/net_demand_forecast_memory.npy"
+        last_x_memory {np.array} -- loaded version of "save/last_x_memory.npy"
+        last_net_demand_memory {np.array} -- loaded version of "save/last_net_demand_memory.npy"
+    """
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(18, 11))
 
     ax1.set_ylabel("Demande nette (kWh)")
@@ -127,6 +157,16 @@ def plot_battery_time(i, x_forecast_memory, net_demand_forecast_memory, last_x_m
     plt.show()
 
 def plot_battery_one_day(i, x_forecast_memory, net_demand_forecast_memory):
+    """Plots the net_demand (past and prediction) and the battery charge(past and prediction) for one_day
+    
+    Arguments:
+        i {int} -- index of the day where begins the plot
+        x_forecast_memory {np.array} -- loaded version of"save/x_forecast_memory.npy"
+        net_demand_forecast_memory {np.array} -- loaded version of"save/net_demand_forecast_memory.npy"
+        last_x_memory {np.array} -- loaded version of "save/last_x_memory.npy"
+        last_net_demand_memory {np.array} -- loaded version of "save/last_net_demand_memory.npy"
+    """
+
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(18, 11))
 
     ax1.set_ylabel("Demande nette (kWh)")
@@ -157,6 +197,15 @@ def plot_battery_one_day(i, x_forecast_memory, net_demand_forecast_memory):
 
 
 def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory):
+    """Plots the net_demand (past and prediction) and the battery charge(past and prediction) evolution with an animation
+    
+    Arguments:
+        i {int} -- index of the day where begins the plot
+        x_forecast_memory {np.array} -- loaded version of"save/x_forecast_memory.npy"
+        net_demand_forecast_memory {np.array} -- loaded version of"save/net_demand_forecast_memory.npy"
+        last_x_memory {np.array} -- loaded version of "save/last_x_memory.npy"
+        last_net_demand_memory {np.array} -- loaded version of "save/last_net_demand_memory.npy"
+    """
 
     fig1, ax1 = plt.subplots(1, 1, figsize=(18, 5))
     line_forecast1, = ax1.plot([], [], color="DarkOrange")
@@ -233,6 +282,12 @@ def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, l
     ani[0].save('save/myAnimation.gif', writer='imagemagick', fps=30)
 
 def plot_cost(u):
+    """Plot the cumulative costs of the 3 tested methods for 1 month
+    
+    Arguments:
+        u {float array} -- the energy transiting in the electric cable
+    """
+
     p_buy_30, p_sell_30 = forecast_prices(DAY_BEGIN, P_PURCHASE, P_SALE, step=ONE_STEP, n_days=30)
 
     cost_without_battery = evaluate_without_battery(
