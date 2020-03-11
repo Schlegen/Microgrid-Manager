@@ -38,10 +38,4 @@ Once you've cloned the program, before your first execution, please set `REFIT_M
 
 ## The data
 
-The data comes from the website of the Australian compagny Ausgrid.com. [CLick here for the data](https://www.ausgrid.com.au/Industry/Our-Research/Data-to-share/Solar-home-electricity-data)
-
-
-## TODO
-
-10) commenter les fonctions
-  --> DONE EN PARTIE
+The data comes from the website of the Australian compagny Ausgrid.com. [Click here for the data](https://www.ausgrid.com.au/Industry/Our-Research/Data-to-share/Solar-home-electricity-data)
