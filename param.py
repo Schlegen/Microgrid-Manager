@@ -37,4 +37,5 @@ ONE_STEP = timedelta(minutes=30)
 
 # Deciding whether we refit the forecasting model
 
-REFIT_MODEL = False
+REFIT_MODEL = True
+SAVE_MODEL = False

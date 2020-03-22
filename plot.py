@@ -26,7 +26,7 @@ from evaluate_cost import evaluate_without_battery, evaluate_clairvoyant, evalua
 
 def plot_demand(day_begin_plot):
     """Plots 3 days of demand
-    
+
     Arguments:
         day_begin_plot {datetime} -- The date from which the plot starts
     """
@@ -45,7 +45,7 @@ def plot_demand(day_begin_plot):
 
 def plot_net_demand(day_begin_plot):
     """Plots 3 days of net demand
-    
+
     Arguments:
         day_begin_plot {datetime} -- The date from which the plot starts
     """
@@ -64,7 +64,7 @@ def plot_net_demand(day_begin_plot):
 
 def plot_generation(day_begin_plot):
     """Plots 3 days of electric generation with the solar pannel
-    
+
     Arguments:
         day_begin_plot {datetime} -- The date from which the plot starts
     """
@@ -83,7 +83,7 @@ def plot_generation(day_begin_plot):
 
 def plot_prices(day_begin_plot):
     """Plots the prices in the microgrid
-    
+
     Arguments:
         day_begin_plot {datetime} -- The date from which the plot starts
     """
@@ -117,7 +117,7 @@ def plot_correlogram_net_demand():
 
 def plot_battery_time(i, x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory):
     """Plots the net_demand (past and prediction) and the battery charge(past and prediction) for several days
-    
+
     Arguments:
         i {int} -- index of the day where begins the plot
         x_forecast_memory {np.array} -- loaded version of"save/x_forecast_memory.npy"
@@ -158,7 +158,7 @@ def plot_battery_time(i, x_forecast_memory, net_demand_forecast_memory, last_x_m
 
 def plot_battery_one_day(i, x_forecast_memory, net_demand_forecast_memory):
     """Plots the net_demand (past and prediction) and the battery charge(past and prediction) for one_day
-    
+
     Arguments:
         i {int} -- index of the day where begins the plot
         x_forecast_memory {np.array} -- loaded version of"save/x_forecast_memory.npy"
@@ -198,7 +198,7 @@ def plot_battery_one_day(i, x_forecast_memory, net_demand_forecast_memory):
 
 def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory):
     """Plots the net_demand (past and prediction) and the battery charge(past and prediction) evolution with an animation
-    
+
     Arguments:
         i {int} -- index of the day where begins the plot
         x_forecast_memory {np.array} -- loaded version of"save/x_forecast_memory.npy"
@@ -210,22 +210,22 @@ def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, l
     fig1, ax1 = plt.subplots(1, 1, figsize=(18, 5))
     line_forecast1, = ax1.plot([], [], color="DarkOrange")
     line_past1, = ax1.plot([],[], color="Blue")
-    title1 = ax1.text(0.5, 1, "", transform=ax1.transAxes, alpha = 1, ha="center")
+#    title1 = ax1.text(0.5, 1, "", transform=ax1.transAxes, alpha = 1, ha="center")
 
         #ax1.set_xlim(0,14 * 48)
     ax1.set_xlim(-5 * 48, 14 * 48)
     ax1.set_ylim(-0.1, 6)
     ax1.set_xlabel('Pas de temps')
     ax1.set_ylabel('Génération Electrique (kWh)')
+    ax1.set_title('Charge de la batterie')
     #ax1.set_title('Chargement de la batterie')
     #plt.legend(bbox_to_anchor=(0.8, 0.8))
 
-    lines1 = [title1, line_forecast1, line_past1]
+    lines1 = [line_forecast1, line_past1]
 
     def init1():
+        lines1[0].set_data([], [])
         lines1[1].set_data([], [])
-        lines1[2].set_data([], [])
-        lines1[0].set_text("")
         return lines1
 
     fig2, ax2 = plt.subplots(1, 1, figsize=(18, 5))
@@ -236,11 +236,12 @@ def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, l
     ax2.set_ylim(-3, 3)
     ax2.set_xlabel('Pas de temps')
     ax2.set_ylabel('Génération Electrique (kWh)')
-    #ax2.set_title('Prédiction de la demande nette')
-    #plt.legend(bbox_to_anchor=(0.8, 0.8))
-    title2 = ax2.text(0.5, 1, "", transform=ax1.transAxes, ha="center")
+    ax2.set_title('Demande Nette')
 
-    lines2 = [title2, line_forecast2, line_past2]
+    #plt.legend(bbox_to_anchor=(0.8, 0.8))
+    #title2 = ax2.text(0.5, 1, "", transform=ax1.transAxes, ha="center")
+
+    lines2 = [line_forecast2, line_past2]
 
     def animate1(i):
         print(i, " begin")
@@ -249,9 +250,9 @@ def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, l
         x_forecast = x_forecast_memory[i,:]
         previous_x = last_x_memory[i,:]
         #ax1.set_xlim(instant - 5 * 48 * ONE_STEP, instant + 14 * 48 * ONE_STEP)
-        lines1[1].set_data([int((k * ONE_STEP).total_seconds()) // 1800 for k in range(len(x_forecast))], x_forecast)
-        lines1[2].set_data([int((k * ONE_STEP).total_seconds()) // 1800 - 5 *48 for k in range(len(previous_x))], previous_x)
-        lines1[0].set_text("Trajectoire de la charge le " + instant.strftime("%m/%d/%Y à %H:%M"))
+        lines1[0].set_data([int((k * ONE_STEP).total_seconds()) // 1800 for k in range(len(x_forecast))], x_forecast)
+        lines1[1].set_data([int((k * ONE_STEP).total_seconds()) // 1800 - 5 *48 for k in range(len(previous_x))], previous_x)
+        #lines1[0].set_text("Trajectoire de la charge le " + instant.strftime("%m/%d/%Y à %H:%M"))
 
         return lines1
 
@@ -262,14 +263,13 @@ def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, l
         instant = DAY_BEGIN + i * ONE_STEP
         net_demand_forecast = net_demand_forecast_memory[i,:]
         previous_net_demand = last_net_demand_memory[i,:]
+        # 
+        # ax2.set_xlim(instant - 5 * 48 * ONE_STEP, instant + 14 * 48 * ONE_STEP)
 
-        #ax2.set_xlim(instant - 5 * 48 * ONE_STEP, instant + 14 * 48 * ONE_STEP)
-
-        title2.set_text(instant.strftime("%m/%d/%Y, %H:%M"))
         ax2.set_xlim(-5 * 48, 14 * 48)
-        lines2[1].set_data([ int((k * ONE_STEP).total_seconds()) // 1800 for k in range(len(net_demand_forecast))], net_demand_forecast)
-        lines2[2].set_data([ int((k * ONE_STEP).total_seconds()) // 1800 - 5 *48 for k in range(len(previous_net_demand))], previous_net_demand)
-        lines2[0].set_text("Demande nette passée et prédite le " + instant.strftime("%m/%d/%Y à %H:%M"))
+        lines2[0].set_data([ int((k * ONE_STEP).total_seconds()) // 1800 for k in range(len(net_demand_forecast))], net_demand_forecast)
+        lines2[1].set_data([ int((k * ONE_STEP).total_seconds()) // 1800 - 5 *48 for k in range(len(previous_net_demand))], previous_net_demand)
+        #lines2[0].set_text("Demande nette passée et prédite le " + instant.strftime("%m/%d/%Y à %H:%M"))
         return lines2
 
     ani = [
@@ -283,7 +283,7 @@ def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, l
 
 def plot_cost(u):
     """Plot the cumulative costs of the 3 tested methods for 1 month
-    
+
     Arguments:
         u {float array} -- the energy transiting in the electric cable
     """
@@ -337,7 +337,7 @@ if __name__ == "__main__":
     last_net_demand_memory = np.load("save/last_net_demand_memory.npy")
     u = np.load("save/u.npy")
 
-    #plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
-    plot_battery_time(8 * 48, x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
+    plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
+    # plot_battery_time(8 * 48, x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
     #plot_battery_one_day(2 * 48, x_forecast_memory, net_demand_forecast_memory)
     #plot_cost(u)

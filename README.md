@@ -25,6 +25,7 @@ This method presents various file among which, what may be the most interesting 
   - `compute_result.py` that saves the interesting results for plot in .npy files
   - `plot.py` where we can draw the plot that appear in my report
   - `app.py` that **launches the dashboard**
+  - `tools.py` contains tools. I have copied this file from an older project. Thus, some functions in this file are not used. 
 
 You'll have to execute either app.py, plot.py, compute_result.py
 
