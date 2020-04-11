@@ -99,8 +99,13 @@ def plot_prices(day_begin_plot):
     purchase = np.insert(P_PURCHASE, 12, P_PURCHASE[11])
     purchase = np.insert(purchase, 45, purchase[45])
 
+<<<<<<< HEAD
     plt.plot(dates, purchase, Color="Blue", label = "Prix d'achat")
     plt.plot([day_begin_plot + i * ONE_STEP for i in range(48)], P_SALE, Color="Orange", label = "Prix de vente")
+=======
+    plt.plot(dates, purchase, Color="Blue", label = "Import Prices")
+    plt.plot([day_begin_plot + i * ONE_STEP for i in range(48)], P_SALE, Color="Orange", label = "Export Prices")
+>>>>>>> d8b2fed3ab1c62cfb214137203cd9b2ab4bfef4e
 
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Hh'))
     plt.grid(True)
