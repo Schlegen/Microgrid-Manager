@@ -99,13 +99,12 @@ def plot_prices(day_begin_plot):
     purchase = np.insert(P_PURCHASE, 12, P_PURCHASE[11])
     purchase = np.insert(purchase, 45, purchase[45])
 
-
     plt.plot(dates, purchase, Color="Blue", label = "Import Prices")
     plt.plot([day_begin_plot + i * ONE_STEP for i in range(48)], P_SALE, Color="Orange", label = "Export Prices")
-    plt.plot([day_begin_plot + i * ONE_STEP for i in range(48)], P_PURCHASE, Color="Orange", label = "Export Prices")
 
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Hh'))
     plt.grid(True)
+    plt.legend()
     plt.show()
 
 def plot_correlogram_net_demand():
@@ -263,7 +262,7 @@ def plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, l
         instant = DAY_BEGIN + i * ONE_STEP
         net_demand_forecast = net_demand_forecast_memory[i,:]
         previous_net_demand = last_net_demand_memory[i,:]
-        # 
+        #
         # ax2.set_xlim(instant - 5 * 48 * ONE_STEP, instant + 14 * 48 * ONE_STEP)
 
         ax2.set_xlim(-5 * 48, 14 * 48)
@@ -327,17 +326,17 @@ if __name__ == "__main__":
 
     #plot_demand(DAY_BEGIN + 3 * 48 * ONE_STEP)
     #plot_generation(DAY_BEGIN + 3 * 48 * ONE_STEP)
-    #plot_prices(DAY_BEGIN)
+    plot_prices(DAY_BEGIN)
     #plot_net_demand(DAY_BEGIN + 3 * 48 * ONE_STEP)
     #plot_correlogram_net_demand()
 
-    x_forecast_memory = np.load("save/x_forecast_memory.npy")
-    net_demand_forecast_memory = np.load("save/net_demand_forecast_memory.npy")
-    last_x_memory = np.load("save/last_x_memory.npy")
-    last_net_demand_memory = np.load("save/last_net_demand_memory.npy")
-    u = np.load("save/u.npy")
+    #x_forecast_memory = np.load("save/x_forecast_memory.npy")
+    #net_demand_forecast_memory = np.load("save/net_demand_forecast_memory.npy")
+    #last_x_memory = np.load("save/last_x_memory.npy")
+    #last_net_demand_memory = np.load("save/last_net_demand_memory.npy")
+    #u = np.load("save/u.npy")
 
-    plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
-    # plot_battery_time(8 * 48, x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
+    #plot_battery(x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
+    # $plot_battery_time(8 * 48, x_forecast_memory, net_demand_forecast_memory, last_x_memory, last_net_demand_memory)
     #plot_battery_one_day(2 * 48, x_forecast_memory, net_demand_forecast_memory)
     #plot_cost(u)
